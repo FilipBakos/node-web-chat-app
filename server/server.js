@@ -17,7 +17,28 @@ io.on('connection', (socket) => {
 
 	socket.on('disconnect',() => {
 		console.log('User disconnected');
+	});
+
+	//EMAIL
+	// socket.on('createEmail',(newEmail) => {
+	// 	console.log('Create email ', newEmail);
+	// });
+
+	socket.on('createMessage',(newMessage) => {
+		console.log('MEssage: ',newMessage);
+	});
+
+	socket.emit('newMessage',{
+		from:'niekto@gmail.com',
+		text: 'TOTO JE OBSAH SPRAVY',
+		createdAt: Date.now()
 	})
+
+	//EMAIL
+	// socket.emit('newEmail',{
+	// 	from: 'meno@googl.com',
+	// 	text: 'TOTO JE CO'
+	// });
 });
 
 
