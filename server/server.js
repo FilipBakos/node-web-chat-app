@@ -26,13 +26,18 @@ io.on('connection', (socket) => {
 
 	socket.on('createMessage',(newMessage) => {
 		console.log('MEssage: ',newMessage);
+		io.emit('newMessage', {
+			from: newMessage.from,
+			text: newMessage.text,
+			createdAt: new Date().getTime()
+ 		})
 	});
 
-	socket.emit('newMessage',{
+	/*socket.emit('newMessage',{
 		from:'niekto@gmail.com',
 		text: 'TOTO JE OBSAH SPRAVY',
 		createdAt: Date.now()
-	})
+	})*/
 
 	//EMAIL
 	// socket.emit('newEmail',{

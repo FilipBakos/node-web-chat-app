@@ -9,10 +9,10 @@ socket.on('connect', function() {
 	// 	text: 'TOTO JE CO'
 	// });
 
-	socket.emit('createMessage',{
+	/*socket.emit('createMessage',{
 		to: 'filipbakos@gmail.com',
 		text: 'TOTO JE OBSAH SPRAVY'
-	});
+	});*/
 });
 
 socket.on('disconnect', function() {
