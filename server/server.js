@@ -3,6 +3,8 @@ const http = require('http'); //netreba instalovat
 const express = require('express');
 const socketIO = require('socket.io');
 
+const {generateMessage} = require('./utils/message');
+
 const publicPath = path.join(__dirname, '../public' );
 const port = process.env.PORT || 3000;
 
@@ -20,15 +22,9 @@ io.on('connection', (socket) => {
 	});
 
 
-	socket.emit('welcomeMessage', {
-		from: 'Admin',
-		text: 'Welcome tot the chat App'
-	});
+	socket.emit('welcomeMessage', generateMessage('admin','Welcome to chat app'));
 
-	socket.broadcast.emit('newUserWelcome', {
-		from: 'Admin',
-		text: 'New user joined'
-	});
+	socket.broadcast.emit('newUserWelcome', generateMessage('admin','New user joined'));
 
 	//EMAIL
 	// socket.on('createEmail',(newEmail) => {
@@ -37,11 +33,7 @@ io.on('connection', (socket) => {
 
 	socket.on('createMessage',(newMessage) => {
 		console.log('MEssage: ',newMessage);
-		io.emit('newMessage', {
-			from: newMessage.from,
-			text: newMessage.text,
-			createdAt: new Date().getTime()
- 		});
+		io.emit('newMessage', generateMessage(newMessage.from, newMessage.text));
  		
  		// socket.broadcast.emit('newMessage', {
 			// from: newMessage.from,
