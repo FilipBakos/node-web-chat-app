@@ -42,6 +42,10 @@ io.on('connection', (socket) => {
  		// });
 	});
 
+	socket.on('createLocationMessage',(coords) => {
+		io.emit('newMessage', generateMessage('Admin', `${coords.latitude}, ${coords.longitude}`));
+	});
+
 	/*socket.emit('newMessage',{
 		from:'niekto@gmail.com',
 		text: 'TOTO JE OBSAH SPRAVY',
