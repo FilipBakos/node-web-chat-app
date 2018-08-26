@@ -1,4 +1,7 @@
+
+
 var socket = io();
+
 
 socket.on('connect', function() {
 	console.log('Connected to server');
@@ -25,19 +28,41 @@ socket.on('disconnect', function() {
 // });
 
 socket.on('newMessage', function(message){
-	console.log('Message ', message);
-	let li = jQuery('<li></li>');
-	li.text(`${message.from}: ${message.text}`);
+	let formattedTime = moment(message.createdAt).format('h:mm a');
+	var template = jQuery('#message-template').html();
+	var html = Mustache.render(template,{
+		text: message.text,
+		from: message.from,
+		createdAt: formattedTime
+	});
 
-	jQuery('#messages').append(li);
+	jQuery('#messages').append(html);
+	
+	// console.log('Message ', message);
+	// let li = jQuery('<li></li>');
+	// li.text(`${message.from} -${formattedTime}- : ${message.text}`);
+
+	// jQuery('#messages').append(li);
 });
 
 socket.on('welcomeMessage', function(message){
-	console.log('Message welcome: ',message);
-	let li = jQuery('<li></li>');
-	li.text(`${message.from}: ${message.text}`);
+		let formattedTime = moment(message.createdAt).format('h:mm a');
 
-	jQuery('#messages').append(li);
+	var template = jQuery('#message-template').html();
+	var html = Mustache.render(template,{
+		text: message.text,
+		from: message.from,
+		createdAt: formattedTime
+	});
+
+	jQuery('#messages').append(html);
+
+
+	// console.log('Message welcome: ',message);
+	// let li = jQuery('<li></li>');
+	// li.text(`${message.from}: ${message.text}`);
+
+	// jQuery('#messages').append(li);
 
 });
 
@@ -53,14 +78,26 @@ socket.emit('createMessage', {
 });
 
 socket.on('newLocationMessage', function(message) {
-	var li = jQuery('<li></li>');
-	var a = jQuery('<a target="_blank">My current location</a>');
+	let formattedTime = moment(message.createdAt).format('h:mm a');
 
-	li.text(`${message.from}: `);
-	a.attr('href', message.url);
+	var template = jQuery("#message-template-location").html();
+	var html = Mustache.render(template,{
+		text: 'My current location',
+		from: message.from,
+		createdAt: formattedTime,
+		link: message.url
+	});
 
-	li.append(a);
-	jQuery('#messages').append(li);
+
+	jQuery('#messages').append(html);
+	// var li = jQuery('<li></li>');
+	// var a = jQuery('<a target="_blank">My current location</a>');
+
+	// li.text(`${message.from} ${formattedTime}: `);
+	// a.attr('href', message.url);
+
+	// li.append(a);
+	//jQuery('#messages').append(li);
 });
 
 
